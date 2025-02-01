@@ -3,6 +3,7 @@ from .models import JobPosting
 from django.shortcuts import render, redirect
 from .forms import UserProfileForm
 from .forms import JobPostingForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     jobs = JobPosting.objects.all()  # Get all job postings
@@ -21,6 +22,7 @@ def create_profile(request):
 
 
 
+@login_required
 def post_job(request):
     if request.method == 'POST':
         form = JobPostingForm(request.POST)
