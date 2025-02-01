@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+from .models import JobPosting
 
 def home(request):
-    return HttpResponse("Welcome to the Job Portal!")
+    jobs = JobPosting.objects.all()  # Get all job postings
+    return render(request, 'jobs/home.html', {'jobs': jobs})

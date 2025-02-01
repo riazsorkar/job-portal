@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Portal</title>
+</head>
+<body>
+    <h1>Job Listings</h1>
+    <ul>
+        {% for job in jobs %}
+            <li>
+                <h2>{{ job.title }}</h2>
+                <p>{{ job.description }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Required Skills:</strong> {{ job.required_skills }}</p>
+                <p><strong>Posted on:</strong> {{ job.posted_date }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
