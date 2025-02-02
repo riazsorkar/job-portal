@@ -12,6 +12,12 @@ from .models import JobPosting, UserProfile
 
 from django.db.models import Q
 
+from django.core.paginator import Paginator
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import JobPosting, JobApplication
+from .forms import JobApplicationForm
+
 def home(request):
     query = request.GET.get('q')  # Get the search query
     if query:
@@ -23,7 +29,14 @@ def home(request):
         )
     else:
         jobs = JobPosting.objects.all()  # Show all jobs if no query
-    return render(request, 'jobs/home.html', {'jobs': jobs})
+
+    # Add pagination
+    paginator = Paginator(jobs, 4)  # Show 5 jobs per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'jobs/home.html', {'page_obj': page_obj})
+
 
 
 def create_profile(request):
@@ -141,3 +154,21 @@ def skill_gap_analysis(user_profile, job):
             })
 
     return suggestions
+
+
+
+def apply_job(request, job_id):
+    job = get_object_or_404(JobPosting, id=job_id)
+
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = job
+            application.applicant = request.user
+            application.save()
+            return redirect('home')  # Redirect to the homepage after applying
+    else:
+        form = JobApplicationForm()
+
+    return render(request, 'jobs/apply_job.html', {'form': form, 'job': job})

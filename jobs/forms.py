@@ -1,6 +1,7 @@
 from django import forms
 from .models import UserProfile
 from .models import JobPosting
+from .models import JobApplication
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -19,3 +20,9 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['name', 'email', 'skills']
+
+
+class JobApplicationForm(forms.ModelForm):
+    class Meta:
+        model = JobApplication
+        fields = ['full_name', 'email', 'resume']

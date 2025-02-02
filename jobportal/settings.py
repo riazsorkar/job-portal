@@ -126,3 +126,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'  # Redirect to the dashboard after login
 LOGOUT_REDIRECT_URL = 'home'  # Redirect to the homepage after logout
+
+# Media Files (Uploaded Resumes)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

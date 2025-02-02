@@ -8,4 +8,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('update-profile/', views.update_profile, name='update_profile'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('apply/<int:job_id>/', views.apply_job, name='apply_job'),
 ]
