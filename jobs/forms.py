@@ -26,3 +26,10 @@ class JobApplicationForm(forms.ModelForm):
     class Meta:
         model = JobApplication
         fields = ['full_name', 'email', 'resume']
+
+from .models import JobApplication
+
+class StatusUpdateForm(forms.ModelForm):
+    class Meta:
+        model = JobApplication
+        fields = ['status']

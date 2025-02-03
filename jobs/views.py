@@ -244,3 +244,21 @@ def view_applications(request, job_id):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'jobs/view_applications.html', {'job': job, 'page_obj': page_obj})
+
+
+from django.shortcuts import get_object_or_404, redirect
+from .forms import StatusUpdateForm
+
+@login_required
+def update_status(request, application_id):
+    application = get_object_or_404(JobApplication, id=application_id, job__employer=request.user)
+
+    if request.method == 'POST':
+        form = StatusUpdateForm(request.POST, instance=application)
+        if form.is_valid():
+            form.save()
+            return redirect('view_applications', job_id=application.job.id)
+    else:
+        form = StatusUpdateForm(instance=application)
+
+    return render(request, 'jobs/update_status.html', {'form': form, 'application': application})

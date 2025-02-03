@@ -43,13 +43,20 @@ class JobApplication(models.Model):
     
 
 class JobApplication(models.Model):
+    STATUS_CHOICES = [
+        ('under_review', 'Under Review'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
+
     job = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
     resume = models.FileField(upload_to='resumes/')
     applied_date = models.DateTimeField(auto_now_add=True)
-    similarity_score = models.FloatField(default=0.0)  # Add this line
+    similarity_score = models.FloatField(default=0.0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='under_review')  # Add this line
 
     def __str__(self):
         return f"{self.full_name} - {self.job.title}"

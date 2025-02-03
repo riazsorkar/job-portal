@@ -32,6 +32,8 @@
                     <p><strong>Email:</strong> {{ application.email }}</p>
                     <p><strong>Applied on:</strong> {{ application.applied_date }}</p>
                     <p><strong>Similarity Score:</strong> {{ application.similarity_score|floatformat:2 }}</p>
+                    <p><strong>Status:</strong> {{ application.get_status_display }}</p>
+                    <a href="{% url 'update_status' application.id %}" class="btn btn-warning">Update Status</a>
                     <a href="{{ application.resume.url }}" class="btn btn-success" download>Download Resume</a>
                 </li>
             {% endfor %}
