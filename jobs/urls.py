@@ -9,4 +9,6 @@ urlpatterns = [
     path('update-profile/', views.update_profile, name='update_profile'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('apply/<int:job_id>/', views.apply_job, name='apply_job'),
+     path('employer-dashboard/', views.employer_dashboard, name='employer_dashboard'),  # Add this line
+    path('view-applications/<int:job_id>/', views.view_applications, name='view_applications'),
 ]

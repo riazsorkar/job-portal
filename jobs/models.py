@@ -4,15 +4,15 @@ from django.contrib.auth.models import User
 
 
 # Job Posting Model
-class JobPosting(models.Model):
-    title = models.CharField(max_length=200)  # Job title
-    description = models.TextField()  # Job description
-    location = models.CharField(max_length=100)  # Job location
-    required_skills = models.TextField()  # Required skills (comma-separated)
-    posted_date = models.DateTimeField(auto_now_add=True)  # Automatically set when job is posted
+from django.contrib.auth.models import User
 
-    def __str__(self):
-        return self.title  # Display job title in the admin panel
+class JobPosting(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    location = models.CharField(max_length=100)
+    required_skills = models.TextField()
+    posted_date = models.DateTimeField(auto_now_add=True)
+    employer = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Add default=1
 
 # User Profile Model (Simple version)
 
@@ -37,6 +37,19 @@ class JobApplication(models.Model):
     email = models.EmailField()
     resume = models.FileField(upload_to='resumes/')  # Store resumes in a 'resumes' folder
     applied_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.job.title}"
+    
+
+class JobApplication(models.Model):
+    job = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    resume = models.FileField(upload_to='resumes/')
+    applied_date = models.DateTimeField(auto_now_add=True)
+    similarity_score = models.FloatField(default=0.0)  # Add this line
 
     def __str__(self):
         return f"{self.full_name} - {self.job.title}"

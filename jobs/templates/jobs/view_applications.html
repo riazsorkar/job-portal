@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Applications for {{ job.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Applications for {{ job.title }}</h1>
+        <a href="?download_all=true" class="btn btn-primary mb-3">Download All CVs</a>
+
+        <!-- Search Bar -->
+        <form method="get" action="" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search by name or email" value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </div>
+        </form>
+
+        <!-- Similarity Score Filter -->
+        <form method="get" action="" class="mb-4">
+            <div class="input-group">
+                <input type="number" name="min_score" class="form-control" placeholder="Minimum similarity score" step="0.01" min="0" max="1" value="{{ request.GET.min_score }}">
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </div>
+        </form>
+
+        <ul>
+            {% for application in page_obj %}
+                <li>
+                    <h3>{{ application.full_name }}</h3>
+                    <p><strong>Email:</strong> {{ application.email }}</p>
+                    <p><strong>Applied on:</strong> {{ application.applied_date }}</p>
+                    <p><strong>Similarity Score:</strong> {{ application.similarity_score|floatformat:2 }}</p>
+                    <a href="{{ application.resume.url }}" class="btn btn-success" download>Download Resume</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>
